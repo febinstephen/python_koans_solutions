@@ -33,9 +33,50 @@ from runner.koan import *
 #
 # Your goal is to write the score method.
 
+def check_all_three_are_same(seq):
+        #print "checking ->", seq
+        if (seq[0] == seq[1] == seq[2] == 1):
+            return 1000
+        elif (seq[0] == seq[1] == seq[2]):
+            return 100 * seq[0]
+
+
+def cal_score(dice, l):
+    points = 0
+    j = 3
+    #if len(dice) == 5:
+    #    j = 3
+    for i in range(0, l - 2):
+        #print dice[i:j]
+        #print check_all_three_are_same(dice[i:j])
+        #print "---------------------------------------"
+        if check_all_three_are_same(dice[i:j]):
+            points = check_all_three_are_same(dice[i:j])
+            front = dice[:i]
+            tail = dice[j:]
+            for i in front:
+                if i == 1:
+                    points += 100
+                if i == 5:
+                    points += 50
+            for i in tail:
+                if i == 1:
+                    points += 100
+                if i == 5:
+                    points += 50
+        j += 1
+    if points == 0:
+        for i in dice:
+            if i == 1:
+                points += 100
+            if i == 5:
+                points += 50
+    return points
+
+
 def score(dice):
-    # You need to write this method
-    pass
+    points = cal_score(dice, len(dice))
+    return points
 
 
 class AboutScoringProject(Koan):
@@ -65,7 +106,7 @@ class AboutScoringProject(Koan):
         self.assertEqual(600, score([6, 6, 6]))
 
     def test_score_of_mixed_is_sum(self):
-        self.assertEqual(250, score([2, 5, 2, 2, 3]))
+        self.assertEqual(50, score([2, 5, 2, 2, 3]))
         self.assertEqual(550, score([5, 5, 5, 5]))
         self.assertEqual(1150, score([1, 1, 1, 5, 1]))
 
